@@ -9,5 +9,6 @@ queue.connect();
 app.use(express.json());
 
 app.use("/users", usersRoutes);
+app.use("/products", productsRoutes);
 
 export { app };
