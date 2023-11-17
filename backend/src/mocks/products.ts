@@ -1,4 +1,5 @@
-import { Product } from "../Modules/products/model/Product";
+import { Product } from "../modules/products/model/product";
+
 
 export const productsMock: Product[] = [
     {
