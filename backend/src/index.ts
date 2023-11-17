@@ -1,32 +1,13 @@
-import client, {Connection, Channel, ConsumeMessage} from 'amqplib'
+import express from "express";
+import queue from "./services/queueService";
+import { usersRoutes } from "./routes/users";
 
+const app = express();
 
-const sendMessages = (channel: Channel) => {
-  for (let i = 0; i < 10; i++) {
-    channel.sendToQueue('myQueue', Buffer.from(JSON.stringify({position: i})));
-    
-  }
-}
+queue.connect();
 
+app.use(express.json());
 
-const consumer = (channel: Channel) => (msg: ConsumeMessage | null): void => {
-  if (msg) {
-    console.log(JSON.parse(msg.content.toString()));
-    channel.ack(msg);
+app.use("/users", usersRoutes);
 
-  }
-}
-
-const start = async () => {
-  const connection: Connection = await client.connect('amqp://username:password@localhost:5672');
-  const channel: Channel = await connection.createChannel();
-  
-  await channel.assertQueue('myQueue');
-  
-  sendMessages(channel);
-
-  await channel.consume('myQueue', consumer(channel));
-
-}
-
-start();
+export { app };
