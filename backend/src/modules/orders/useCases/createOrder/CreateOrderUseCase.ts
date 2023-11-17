@@ -1,3 +1,4 @@
+import { QueueService } from "../../../../services/queueService";
 import { ProductItem } from "../../../products/model/ProductItem";
 import { Product } from "../../../products/model/product";
 import { ProductsRepository } from "../../../products/repositories/implementations/ProductsRepository";
@@ -31,8 +32,10 @@ class CreateOrderUseCase {
         }
 
 
-        const order = new Order(productsItems, user)
-        this.orderRepository.create(order)
+        const order = new Order(productsItems, user);
+        this.orderRepository.create(order);
+
+        QueueService.getInstance().send(order, "orders");
 
         return order
 

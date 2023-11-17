@@ -1,34 +1,21 @@
-import client, {Connection, Channel, ConsumeMessage} from 'amqplib'
+import {Channel} from 'amqplib'
+import { RabbitMQ } from '../config/rabbitMQ';
 
+type QueueName = 'orders';
 class QueueService {
-    private channel: Channel | null;
-    private name: string;
+    constructor(private channel: Channel) {}
 
-    constructor (name: string) {
-        this.name = name
-        this.channel = null;
-    }
-
-    async connect() {
-        const connection: Connection = await client.connect('amqp://username:password@localhost:5672');
-        this.channel = await connection.createChannel();
-        await this.channel.assertQueue(this.name);
-        await this.channel.consume(this.name, this.consumer())
-        console.log(`Queue ${this.name} connected!`);
-    }
-
-    async send<T>(data: T) {
+    async send(data: unknown, name: QueueName) {
         if (this.channel) {
-            this.channel.sendToQueue(this.name, Buffer.from(JSON.stringify(data)))
+            this.channel.sendToQueue(name, Buffer.from(JSON.stringify(data)));
+
         }
     }
 
-    private consumer = () => (msg: ConsumeMessage | null): void => {
-        if (msg && this.channel) {
-            console.log(JSON.parse(msg.content.toString()));
-            this.channel.ack(msg);
-        }
+    public static getInstance(): QueueService {
+        return RabbitMQ.getQueueService();
+        
     }
 }
 
-export default new QueueService("orders");
+export { QueueService };

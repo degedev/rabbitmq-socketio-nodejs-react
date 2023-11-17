@@ -2,7 +2,7 @@ import { OrdersRepository } from "../../repositories/implementations/OrdersRepos
 import { CreateOrderController } from "./CreateOrderController";
 import { CreateOrderUseCase } from "./CreateOrderUseCase";
 
-const orderRepository = new OrdersRepository();
+const orderRepository = OrdersRepository.getInstance();
 const createOrderUseCase  = new CreateOrderUseCase(orderRepository)
 const createOrderController = new CreateOrderController(createOrderUseCase);
 
