@@ -2,7 +2,7 @@ import { Channel, ConsumeMessage } from "amqplib";
 import { Order } from "../../../modules/orders/model/Order";
 import { IQueueConsumer } from "../IQueueService";
 import { OrdersRepository } from "../../../modules/orders/repositories/implementations/OrdersRepository";
-
+import { io } from "../../..";
 class OrderQueueConsumer implements IQueueConsumer {
     name: string;
     channel: Channel;
@@ -18,9 +18,14 @@ class OrderQueueConsumer implements IQueueConsumer {
 
             const orderRepository = OrdersRepository.getInstance();
 
-            orderRepository.approveOrder(order.id);
+            setTimeout(() => {
 
-            this.channel.ack(msg);
+                orderRepository.approveOrder(order.id);
+
+                io.emit("orderStatusChange", { orderId: order.id, newStatus: "confirmado" });
+                
+                this.channel.ack(msg);
+            }, 3000);
         }
     }
 
