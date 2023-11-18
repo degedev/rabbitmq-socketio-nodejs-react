@@ -5,6 +5,7 @@ import { Server } from "socket.io";
 
 import { usersRoutes } from "./routes/users";
 import { ordersRoutes } from "./routes/orders";
+import { productsRoutes } from "./routes/products";
 
 const app = express();
 
@@ -15,6 +16,7 @@ app.use(cors());
 
 app.use("/users", usersRoutes);
 app.use("/orders", ordersRoutes);
+app.use("/products", productsRoutes);
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", allowedOrigin);
   res.header(
