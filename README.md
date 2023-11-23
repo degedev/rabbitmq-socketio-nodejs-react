@@ -5,16 +5,16 @@
 ## Como Fazer Funcionar o Código
 
 - Clone o Repositório:
-  git clone git@github.com:degedev/rabbitmq-socketio-nodejs-react.git
-  cd nome-do-repositorio
+  -- git clone git@github.com:degedev/rabbitmq-socketio-nodejs-react.git
+  -- cd nome-do-repositorio
 
 - Instale as Dependências:
-  npm install
+  -- npm install
 
 - Execute com Docker Compose:
-  npm run up
+  -- npm run up
 
 Este comando utiliza o Docker Compose para iniciar o ambiente. Certifique-se de ter o Docker e o Docker Compose instalados.
 
 - Acesse o Frontend:
-Certifique-se de que o frontend está configurado corretamente e acesse-o através de http://localhost:3000
+  -- Certifique-se de que o frontend está configurado corretamente e acesse-o através de http://localhost:3000
