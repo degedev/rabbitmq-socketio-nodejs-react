@@ -12,22 +12,33 @@ class OrderQueueConsumer implements IQueueConsumer {
         this.channel = channel;
     }
 
-    consumer = () => (msg: ConsumeMessage | null): void => {
+    consumer = () => async (msg: ConsumeMessage | null): Promise<void> => {
         if (msg && this.channel) {
             const order: Order = JSON.parse(msg.content.toString());
 
             const orderRepository = OrdersRepository.getInstance();
 
-            setTimeout(() => {
-
+            setTimeout(async () => {
                 orderRepository.approveOrder(order.id);
-
                 io.emit("orderStatusChange", { orderId: order.id, newStatus: "confirmado" });
-                
-                this.channel.ack(msg);
-            }, 3000);
+
+                setTimeout(async () => {
+                    orderRepository.sendOrder(order.id);
+                    io.emit("orderStatusChange", { orderId: order.id, newStatus: "enviado" });
+
+                    
+                    setTimeout(async () => {
+                        orderRepository.receiveOrder(order.id);
+                        io.emit("orderStatusChange", { orderId: order.id, newStatus: "recebido" });
+
+                        
+                        this.channel.ack(msg);
+                    }, 7000);
+                }, 3000);
+            }, 4000);
         }
     }
+
 
     async init() {
         await this.channel.assertQueue(this.name);

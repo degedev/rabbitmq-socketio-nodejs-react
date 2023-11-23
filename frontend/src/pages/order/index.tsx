@@ -7,7 +7,6 @@ import {
   ProductId,
   Price,
   Quantity,
-  Button,
   TitleMessage,
 } from "./styles";
 import { useParams } from "react-router-dom";
@@ -36,7 +35,7 @@ const Order = () => {
   const { id, buyId } = useParams<any>();
 
   const [userData, setUserData] = useState<OrdersProps>();
-  const [statusData, setStatusData] = useState("pedente");
+  const [statusData, setStatusData] = useState("pendente");
 
   useEffect(() => {
     const userDataString = localStorage.getItem("userData");

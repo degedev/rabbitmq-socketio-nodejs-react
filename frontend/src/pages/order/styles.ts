@@ -17,7 +17,7 @@ export const TitleMessage = styled.div<{ color: string }>`
   margin-bottom: 10px;
 `;
 export const StatusMessage = styled.div<{ color: string }>`
-  color: ${(props) => (props.color === "confirmado" ? "#2ecc71" : "#f39c12")};
+  color: ${(props) => (props.color === "recebido" ? "#2ecc71" : "#f39c12")};
   font-weight: bold;
   margin-bottom: 10px;
 `;

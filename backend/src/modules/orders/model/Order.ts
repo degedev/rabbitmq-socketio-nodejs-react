@@ -6,7 +6,7 @@ class Order {
     items: ProductItem[];
     user: User;
     total: number;
-    status: 'pendente' | 'confirmado';
+    status: 'pendente' | 'confirmado' | 'enviado' | 'recebido';
 
     constructor(items: ProductItem[], user: User) {
         this.id = new Date().getTime().toString();

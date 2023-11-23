@@ -16,10 +16,19 @@ class RabbitMQ {
     }
 
     async connect() {
-        const connection: Connection = await connect('amqp://username:password@localhost:5672');
-        this.channel = await connection.createChannel();
+        let connection;
+        while (!connection) {
+          try {
+            connection = await connect('amqp://username:password@rabbitmq:5672');
+          } catch (err) {
+            console.log("Tentando conexão...")
+            await new Promise(resolve => setTimeout(resolve, 5000));
+          }
+        }
 
+        this.channel = await connection.createChannel();
         await new OrderQueueConsumer('orders', this.channel).init();
+
     }
 
     public static getQueueService(): QueueService {

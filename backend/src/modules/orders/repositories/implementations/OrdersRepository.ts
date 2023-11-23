@@ -29,6 +29,22 @@ class OrdersRepository implements IOrdersRepository {
             }
         });
     }
+
+    sendOrder(orderId: string): void {
+        this.orders.forEach(order => {
+            if (order.id === orderId) {
+                order.status = 'enviado';
+            }
+        });
+    }
+
+    receiveOrder(orderId: string): void {
+        this.orders.forEach(order => {
+            if (order.id === orderId) {
+                order.status = 'recebido';
+            }
+        });
+    }
 }
 
 export { OrdersRepository };
